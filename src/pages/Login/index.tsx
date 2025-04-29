@@ -3,6 +3,7 @@ import Button from "../../components/Button";
 import Input from "../../components/Input";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
+import { useNavigate } from "react-router-dom";
 
 import { Container, LoginContainer, Column, Spacing, Title } from "./styles";
 import { defaultValues, IFormLogin } from "./types";
@@ -18,6 +19,7 @@ const schema = yup
   .required();
 
 const Login = () => {
+  const navigate = useNavigate();
   const {
     control,
     formState: { errors, isValid },
@@ -27,6 +29,18 @@ const Login = () => {
     defaultValues,
     reValidateMode: "onChange",
   });
+
+  const handleClick = () => {
+    if (!isValid) {
+      alert("Preencha todos os campos corretamente");
+      return;
+    }
+    else{
+      navigate("/home");
+    }
+
+    
+  }
 
   return (
     <Container>
@@ -49,7 +63,8 @@ const Login = () => {
             errorMessage={errors?.password?.message}
           />
           <Spacing />
-          <Button title="Entrar" />
+            <Button title="Entrar" onClick={handleClick} disable={!isValid}  />
+
         </Column>
       </LoginContainer>
     </Container>
